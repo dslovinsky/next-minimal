@@ -1,40 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) minimal repo bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```shell
+yarn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To start the **Nextjs** dev server:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```shell
+yarn dev
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+then open [http://localhost:3000](http://localhost:3000).
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+And to start **Storybook**:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```shell
+yarn storybook
+```
 
-## Learn More
+then open [http://localhost:6007](http://localhost:6007).
 
-To learn more about Next.js, take a look at the following resources:
+## Demo babel-plugin-styled-components bug
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This repo uses styled-components for styling, with some styles applied via the CSS prop provided by [babel-plugin-styled-components](https://styled-components.com/docs/tooling). The babel plugin included automatically in Nextjs with this option:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```js
+  compiler: {
+    styledComponents: true,
+  },
+```
 
-## Deploy on Vercel
+You can verify that this works by observing the button on the homepage of the Nextjs build, which has a red `background-color` applied via the CSS prop.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+In Storybook the babel plugin must be provided directly via a custom babel config, which is added as a .babelrc within the `.storybook` directory. However, observing the same Button component in Storybook, you should see that the `background-color` is not applied. The value of CSS is added as an HTML attribute, but no CSS class is created and applied as should occur if the babel plugin were functioning correctly.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```html
+<button css="background-color: #ff0000;">Button</button>
+```
+
+Running the following command, you can verify that the custom babel config is being used by the Storybook preview:
+
+```shell
+BABEL_SHOW_CONFIG_FOR=.storybook/preview.ts yarn storybook
+```
