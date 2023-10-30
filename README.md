@@ -24,7 +24,7 @@ yarn storybook
 
 then open [http://localhost:6007](http://localhost:6007).
 
-## Demo babel-plugin-styled-components bug
+## Demo `babel-plugin-styled-components` bug
 
 This repo uses styled-components for styling, with some styles applied via the CSS prop provided by [babel-plugin-styled-components](https://styled-components.com/docs/tooling). The babel plugin included automatically in Nextjs with this option:
 
@@ -36,7 +36,7 @@ This repo uses styled-components for styling, with some styles applied via the C
 
 You can verify that this works by observing the button on the homepage of the Nextjs build, which has a red `background-color` applied via the CSS prop.
 
-In Storybook the babel plugin must be provided directly via a custom babel config, which is added as a .babelrc within the `.storybook` directory. However, observing the same Button component in Storybook, you should see that the `background-color` is not applied. The value of CSS is added as an HTML attribute, but no CSS class is created and applied as should occur if the babel plugin were functioning correctly.
+In Storybook, the babel plugin must be provided directly via a custom babel config, which is added as a `.babelrc` within the `.storybook` directory. However, observing the same Button component in Storybook, you should see that the `background-color` is **not** applied. The value of CSS is added as an HTML attribute, but no CSS class is created and applied as should occur if the babel plugin were functioning correctly.
 
 ```html
 <button css="background-color: #ff0000;">Button</button>
